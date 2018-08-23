@@ -49,7 +49,7 @@ public class CopierTaskModel {
      * @param destinationFolder папка назначение
      * @throws IOException
      */
-    public CopierTaskModel(String mask, String sourceFolder, String destinationFolder) throws IOException {
+    public CopierTaskModel(String sourceFolder, String destinationFolder, String mask) {
         this(mask, sourceFolder, destinationFolder, 0);
     }
 
@@ -62,18 +62,17 @@ public class CopierTaskModel {
      * @param taskTimeoutInSeconds таймаут
      * @throws IOException ошибка инициализации
      */
-    private CopierTaskModel(String mask, String sourceFolder, String destinationFolder, long taskTimeoutInSeconds)
-            throws IOException {
+    private CopierTaskModel(String mask, String sourceFolder, String destinationFolder, long taskTimeoutInSeconds) {
         this.mask = mask;
         this.sourceFolder = Paths.get(sourceFolder);
         this.destinationFolder = Paths.get(destinationFolder);
-        this.repeatableTask = taskTimeoutInSeconds != 0L ? true : false;
+        this.repeatableTask = taskTimeoutInSeconds != 0L;
         this.taskTimeoutInSeconds = taskTimeoutValidator(taskTimeoutInSeconds);
     }
 
-    private long taskTimeoutValidator(long timeout) throws IOException {
+    private long taskTimeoutValidator(long timeout) {
         if (timeout < 0L) {
-            throw new IOException("Время повторного действия меньше нуля");
+            return 0;
         }
         return timeout;
     }
@@ -91,7 +90,7 @@ public class CopierTaskModel {
     public String maskToRegexConverter(String mask) {
         String regex = mask.replaceAll(".", "\\."). //  Защищаем точку в маске
                 replaceAll("\\?", "."); // Меняем одиночный символ в соответствии с regex
-       //         replaceAll("\\*", "+"); // Меняем множественный символ в соответствии с regex
+        //         replaceAll("\\*", "+"); // Меняем множественный символ в соответствии с regex
         return regex;
     }
 
@@ -130,4 +129,12 @@ public class CopierTaskModel {
         return taskTimeoutInSeconds;
     }
 
+    @Override
+    public String toString() {
+        return "CopierTaskModel{" +
+                "mask='" + mask + '\'' +
+                ", sourceFolder=" + sourceFolder +
+                ", destinationFolder=" + destinationFolder +
+                '}';
+    }
 }

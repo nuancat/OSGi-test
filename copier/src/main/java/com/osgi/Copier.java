@@ -6,8 +6,11 @@ package com.osgi;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 /**
  * @author shamilbikchentaev
@@ -22,13 +25,17 @@ public class Copier {
      * @return filepath для копирования
      * @throws Exception
      */
-    public static Set<Path> findFilesInSourceWithTask(CopierTaskModel ctm) throws Exception {
+    public static Set<Path> findFilesInSourceWithTask(CopierTaskModel ctm) {
         Path sourceFolder = ctm.getSourceFolder();
-        isFolderAvailable(sourceFolder);
-        Set<Path> pathStream = Files.list(sourceFolder)
-                .filter(path -> Files.isRegularFile(path))
-                .filter(path -> path.getFileName().toString().matches(ctm.getMask()))
-                .collect(Collectors.toSet());
+        Set<Path> pathStream = null;
+        try {
+            pathStream = Files.list(sourceFolder)
+                    .filter(path -> Files.isRegularFile(path))
+                    .filter(path -> path.getFileName().toString().matches(ctm.getMask()))
+                    .collect(Collectors.toSet());
+        } catch (IOException e) {
+            System.out.println("SourceFolder in not available");
+        }
         return pathStream;
     }
 
@@ -50,12 +57,13 @@ public class Copier {
      * Собственно само копирование
      *
      * @param files файлы, который нужно скопировать
-     * @param destination путь до папки назначения копирования
+     * @param destinationFolder путь до папки назначения копирования
      */
-    public static void makeCopy(Set<Path> files, Path destination) {
-        files.stream().forEach(file -> {
+    public static void makeCopy(Set<Path> files, Path destinationFolder) {
+        files.forEach((Path file) -> {
             try {
-                Files.copy(file, destination);
+                Path destinationPath = Paths.get(destinationFolder.toString(), file.getFileName().toString());
+                Files.copy(file, destinationPath, REPLACE_EXISTING);
             } catch (IOException e) {
                 System.out.println(file.toString() + " can't be copied");
             }

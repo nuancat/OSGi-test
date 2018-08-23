@@ -2,17 +2,20 @@ package com.test;
 
 import com.osgi.Copier;
 import com.osgi.CopierTaskModel;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.nio.file.Path;
 import java.util.Set;
 
-import static org.junit.Assert.*;
 
-/**
- * Created by shamilbikchentaev on 22.08.18.
- */
+
 public class CopierTest {
+    /**
+     * Кастомный тест
+     * @throws Exception
+     */
+    @Ignore
     @Test
     public void findFilesInSourceWithTask() throws Exception {
         String[] masks = {".+", ".+bz2", ".+txt"};

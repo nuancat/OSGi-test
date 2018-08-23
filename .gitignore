@@ -1,0 +1,6 @@
+
+###IntellijIdea excludes
+.idea/*
+*.iml
+
+copier/target/*

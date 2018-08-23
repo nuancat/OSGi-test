@@ -1,6 +1,5 @@
 package com.osgi;
 
-
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceEvent;
@@ -13,8 +12,8 @@ public class Activator implements BundleActivator, ServiceListener {
     @Override
     public void start(BundleContext bundleContext) throws Exception {
         System.out.println("started");
-        new File("/Users/shamilbikchentaev/"+
-                new Date().getMinutes()+"."+new Date().getSeconds()).createNewFile();
+        new File("/Users/shamilbikchentaev/" +
+                new Date().getMinutes() + "." + new Date().getSeconds()).createNewFile();
         bundleContext.addServiceListener(this);
     }
 

@@ -50,10 +50,6 @@
                 <extensions>true</extensions>
                 <configuration>
                     <obrRepository>NONE</obrRepository>
-                    <instructions>
-                        <service_mode>generic</service_mode>
-                        <_include>-bnd.bnd</_include>
-                    </instructions>
                 </configuration>
             </plugin>
         </plugins>

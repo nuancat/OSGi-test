@@ -1,5 +1,8 @@
 package com.osgi;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,7 +18,11 @@ import java.util.Set;
  */
 public class TaskLoader extends Thread {
 
+    final Logger logger = LoggerFactory.getLogger(TaskLoader.class);
+
     private static String CONFIG_SEPARATOR = " ";
+
+    private static int COPIER_TASK_MODEL_PARAMETER_COUNT = 3;
 
     /**
      * Внутреннее хранилище заданий
@@ -32,7 +39,7 @@ public class TaskLoader extends Thread {
     /**
      * Таймаут между сканированиями файла с конфигурацией
      */
-    private long timeoutBetweenTasksLoading = 500L;
+    private long timeoutBetweenTasksLoading = 5000L;
 
     public TaskLoader(String tasksFilePath) {
         this.tasksFilePath = Paths.get(tasksFilePath);
@@ -50,16 +57,27 @@ public class TaskLoader extends Thread {
         try {
             Files.lines(path)
                     .map(line -> line.split(CONFIG_SEPARATOR))
-                    .forEach(elements -> tasks.add(new CopierTaskModel(elements[0], elements[1], elements[2])));
-        } catch (IOException e) {
-            System.out.println("Unable to open tasks file "+ path.getFileName());
+                    .forEach(elements -> {
+                        if (elements.length == COPIER_TASK_MODEL_PARAMETER_COUNT) {
+                            tasks.add(new CopierTaskModel(elements[0], elements[1], elements[2]));
+                        }
+                    });
+            Files.delete(path);
+            Files.createFile(path);
+        } catch (IOException e)
+
+        {
+            logger.error("Unable to open tasks file {}", path.getFileName());
         }
+
     }
 
     public void executeTask() {
-        CopierTaskModel ctm = tasks.poll();
-        Set<Path> paths = Copier.findFilesInSourceWithTask(ctm);
-        Copier.makeCopy(paths, ctm.getDestinationFolder());
+        while (!tasks.isEmpty()) {
+            CopierTaskModel ctm = tasks.poll();
+            Set<Path> paths = Copier.findFilesInSourceWithTask(ctm);
+            Copier.makeCopy(paths, ctm.getDestinationFolder());
+        }
     }
 
     public Queue<CopierTaskModel> getTasks() {
@@ -70,8 +88,17 @@ public class TaskLoader extends Thread {
         try {
             Thread.sleep(timeoutBetweenTasksLoading);
         } catch (InterruptedException e) {
-            System.out.println("timeout Error");
+            logger.error("timeout Error");
         }
         return true;
+    }
+
+    /**
+     * Установщик флага работы
+     *
+     * @param running - флаг
+     */
+    public void setRunning(boolean running) {
+        isRunning = running;
     }
 }

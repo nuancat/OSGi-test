@@ -47,7 +47,6 @@ public class CopierTaskModel {
      * @param mask              маска
      * @param sourceFolder      исходная папка
      * @param destinationFolder папка назначение
-     * @throws IOException
      */
     public CopierTaskModel(String sourceFolder, String destinationFolder, String mask) {
         this(mask, sourceFolder, destinationFolder, 0);
@@ -60,7 +59,6 @@ public class CopierTaskModel {
      * @param sourceFolder         исходная папка
      * @param destinationFolder    папка назначение
      * @param taskTimeoutInSeconds таймаут
-     * @throws IOException ошибка инициализации
      */
     private CopierTaskModel(String mask, String sourceFolder, String destinationFolder, long taskTimeoutInSeconds) {
         this.mask = mask;

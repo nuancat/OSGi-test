@@ -21,9 +21,9 @@ public class CopierTest {
         String[] masks = {".+", ".+bz2", ".+txt"};
         for (String mask : masks) {
             System.out.println("\nTEST findFilesInSourceFolder With Mask  - "+ mask+" \n\n");
-            CopierTaskModel copierTaskModel = new CopierTaskModel(mask,
+            CopierTaskModel copierTaskModel = new CopierTaskModel(
                     "/Users/shamilbikchentaev/Documents",
-                    "/Users/shamilbikchentaev/OneDrive");
+                    "/Users/shamilbikchentaev/OneDrive",mask);
             Set<Path> filesInSourceWithTask = Copier.findFilesInSourceWithTask(copierTaskModel);
             filesInSourceWithTask.stream().forEach(System.out::println);
         }

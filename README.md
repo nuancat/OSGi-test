@@ -3,12 +3,11 @@
 
 Запуск 
 1) Переходим консолью в каталог проекта, пишем mvn clean verify (проект собирается)
-2) В папке с проектом заходим в каталог copier/target и копируем файл copier1.jar в папку deploy у apache karaf
-3) Запускаем apache karaf (./karaf), устанавливаем feature:install jetty
-4) Запускаем бандл copier-1.jar
-5) Переходим в браузер (либо генератор запросов http типа postman), отправляем запрос
+2) Запускаем apache karaf (./karaf), устанавливаем feature:install jetty
+3) В папке с проектом заходим в каталог copier/target и копируем файл copier1.jar в папку deploy у apache karaf
+4) Переходим в браузер (либо генератор запросов http типа postman), отправляем запрос
 localhost:8000/addTask?source='_путь_исходная_папка_'&destination'_путь_папка _назначения_'&mask='_маска_'
-6) Появляется сообщение об успешном либо неуспешном копировании
+5) Появляется сообщение об успешном либо неуспешном копировании
 
 OSGi project - file copier with http API interface
 1) Open the project directory in console

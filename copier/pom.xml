@@ -30,14 +30,24 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.8.0-beta2</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-server -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>9.4.6.v20170531</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-servlet -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
+            <version>9.4.6.v20170531</version>
+        </dependency>
+
     </dependencies>
     <build>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
-                <includes>
-                    <include>*</include>
-                </includes>
             </resource>
         </resources>
     </build>

@@ -4,3 +4,4 @@
 *.iml
 
 copier/target/*
+*.DS_Store

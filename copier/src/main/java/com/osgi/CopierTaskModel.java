@@ -3,6 +3,8 @@
  */
 package com.osgi;
 
+import lombok.Data;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -11,7 +13,8 @@ import java.nio.file.Paths;
  *
  * @author shamilbikchentaev
  */
-public class CopierTaskModel {
+public @Data
+class CopierTaskModel {
 
     /**
      * Папка источник (откуда копируются файлы)
@@ -39,42 +42,5 @@ public class CopierTaskModel {
         this.mask = mask;
         this.sourceFolder = Paths.get(sourceFolder);
         this.destinationFolder = Paths.get(destinationFolder);
-    }
-
-    private long taskTimeoutValidator(long timeout) {
-        if (timeout < 0L) {
-            return 0;
-        }
-        return timeout;
-    }
-
-    /**
-     * @return Маска названия файлов для копирования
-     */
-    public String getMask() {
-        return mask;
-    }
-
-    /**
-     * @return Исходная папка для копирования
-     */
-    public Path getSourceFolder() {
-        return sourceFolder;
-    }
-
-    /**
-     * @return Папка назначения для копирования
-     */
-    public Path getDestinationFolder() {
-        return destinationFolder;
-    }
-
-    @Override
-    public String toString() {
-        return "CopierTaskModel{" +
-                "sourceFolder=" + sourceFolder +
-                ", destinationFolder=" + destinationFolder +
-                ", mask='" + mask + '\'' +
-                '}';
     }
 }

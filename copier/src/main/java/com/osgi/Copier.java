@@ -1,5 +1,6 @@
 package com.osgi;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,12 +19,9 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  *
  * @author shamilbikchentaev
  */
+@Slf4j
 public class Copier {
 
-    /**
-     * Логгер
-     */
-    final static Logger logger = LoggerFactory.getLogger(TaskLoader.class);
 
     /**
      * Поиск файлов в каталоге-источнике todo: подумать над реализацией
@@ -32,7 +30,7 @@ public class Copier {
      * @return filepath для копирования
      */
     public static Set<Path> findFilesInSourceWithTask(CopierTaskModel ctm) throws Exception {
-        logger.debug(ctm.toString());
+        log.debug(ctm.toString());
         Path sourceFolder = ctm.getSourceFolder();
         Set<Path> filePaths = null;
         try {
@@ -43,7 +41,7 @@ public class Copier {
         } catch (IOException e) {
             throw new Exception(MessageFormat.format("Source folder ''{0}'' is in not available", sourceFolder));
         }
-        logger.info("{} -- Files found by mask in source filder", filePaths.size());
+        log.info("{} -- Files found by mask in source filder", filePaths.size());
         return filePaths;
     }
 

@@ -1,5 +1,6 @@
 package com.osgi;
 
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.slf4j.Logger;
@@ -20,11 +21,8 @@ import static com.osgi.TaskLoader.UrlParameters.*;
  * и таймаутом между сканированиями файла с задачами <code>timeoutBetweenTasksLoading</code>. При инициализации
  * конструктора задается начальный файл где хранятся задания на копирование
  */
+@Slf4j
 public class TaskLoader extends AbstractHandler {
-    /**
-     * Логгер
-     */
-    final Logger logger = LoggerFactory.getLogger(TaskLoader.class);
 
     /**
      * Класс содержащий параметры при HTTP запросах
@@ -46,13 +44,13 @@ public class TaskLoader extends AbstractHandler {
                 CopierTaskModel ctm = loadTask(request.getParameterMap());
                 executeTask(ctm);
                 httpServletResponse.getWriter().println("Task successfully executed");
-                logger.warn("Task successfully executed");
+                log.warn("Task successfully executed");
             }
         } catch (NullPointerException e) {
-            logger.warn("Adding task failed");
+            log.warn("Adding task failed");
             httpServletResponse.getWriter().println("Adding task failed");
         } catch (Exception exc) {
-            logger.warn(exc.getMessage());
+            log.warn(exc.getMessage());
             httpServletResponse.getWriter().println(exc.getMessage());
         }
         request.setHandled(true);
